@@ -8,54 +8,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Formulaire de contact — envoi réel via FormSubmit (AJAX, sans backend à héberger)
+  // Formulaire de contact — envoi réel via FormSubmit (soumission classique, sans backend à héberger)
   var form = document.querySelector('#contact-form');
   if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var btn = form.querySelector('button[type="submit"]');
-      var original = btn.textContent;
-
+    form.addEventListener('submit', function () {
+      // On construit l'objet du mail juste avant l'envoi (mix de tous les champs sauf le message)
       var nom = (form.nom.value || '').trim();
       var prenom = (form.prenom.value || '').trim();
       var email = (form.email.value || '').trim();
       var telephone = (form.telephone.value || '').trim();
       var sujet = (form.sujet.value || '').trim();
 
-      // Objet du mail = mix de tous les champs sauf le message
       var subjectParts = [prenom, nom, sujet, telephone, email].filter(function (v) { return v; });
-      var subject = 'Nouveau message du site — ' + subjectParts.join(' · ');
-
-      var formData = new FormData(form);
-      formData.set('_subject', subject);
-      formData.set('_template', 'table');
-      formData.set('_captcha', 'false');
-
-      btn.disabled = true;
-      btn.textContent = 'Envoi en cours...';
-
-      fetch('https://formsubmit.co/ajax/loys.berthelier@hotmail.fr', {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: formData
-      })
-        .then(function (res) {
-          if (!res.ok) { throw new Error('send failed'); }
-          return res.json();
-        })
-        .then(function () {
-          btn.textContent = 'Message envoyé ✓';
-          form.reset();
-        })
-        .catch(function () {
-          btn.textContent = 'Erreur, réessayez';
-        })
-        .finally(function () {
-          setTimeout(function () {
-            btn.textContent = original;
-            btn.disabled = false;
-          }, 3000);
-        });
+      var subjectField = form.querySelector('input[name="_subject"]');
+      if (subjectField) {
+        subjectField.value = 'Nouveau message du site — ' + subjectParts.join(' · ');
+      }
+      // Pas de preventDefault : le formulaire s'envoie normalement vers FormSubmit
     });
   }
 });
