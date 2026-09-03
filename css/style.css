@@ -806,6 +806,37 @@ section{ padding: 72px 0; }
 }
 
 /* ===========================================
+   Legal page blocks (mentions légales)
+=========================================== */
+.legal-block{
+  display:flex;
+  gap: 22px;
+  align-items:flex-start;
+  padding: 34px 0;
+}
+.legal-num{
+  flex-shrink:0;
+  width: 38px;
+  height: 38px;
+  border-radius:50%;
+  border: 1.5px solid var(--gold);
+  color: var(--navy);
+  font-family: var(--font-serif, inherit);
+  font-weight:700;
+  font-size:1rem;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.legal-block h2{ font-size:1.15rem; color: var(--navy); margin-bottom:10px; }
+.legal-block p, .legal-block li{ font-size:0.96rem; color: var(--slate); }
+
+@media (max-width: 560px){
+  .legal-block{ gap:14px; }
+  .legal-num{ width:32px; height:32px; font-size:0.9rem; }
+}
+
+/* ===========================================
    Service blocks (prestations detail)
 =========================================== */
 .service-block{
